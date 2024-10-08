@@ -92,3 +92,22 @@ writeRaster(clustrast, 'cluster_Lloyd.tif')
 
 #interpreting cluster anaylsis
 clusters$centers
+#density based clustering
+
+
+#inculding coordinates as variable 
+df$x=scalfun(coord[,1])
+df$y=scalfun(coord[,2])
+
+for(xval in (ncol(df)-1):ncol(df)){
+  df[,xval]=scalfun(df[,xval])
+}
+clustersGeo <- kmeans(df, centers=5, iter.max=50, nstart=5, algorithm="Lloyd")
+clustrastGeo=waterdyn[[1]]
+clustrastGeo[cellval[,2]]=clustersGeo$cluster
+plot(clustrastGeo)
+zoom(clustrastGeo, e=ext, maxcell=100000, layer=1, new=FALSE)
+clustlistGeo=list(clustrast, clustersGeo)
+save(clustlistGeo, file='clusterGeo_Lloyd.RData')
+writeRaster(clustrastGeo, 'clusterGeo_Lloyd.tif')
+clustersGeo$centers
