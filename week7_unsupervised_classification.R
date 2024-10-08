@@ -26,6 +26,7 @@ library(dbscan)
 
 waterdyn<- rast("aguavarMarialaBaja.tif")
 plotRGB(waterdyn, r=1, g=2, b=1)
+##for my own stack: data
 ext=draw("extent")
 zoom(waterdyn, e=ext, maxcell=100000, layer=2, new=FALSE)
 click(waterdyn, n=10, cell=TRUE)
@@ -111,3 +112,5 @@ clustlistGeo=list(clustrast, clustersGeo)
 save(clustlistGeo, file='clusterGeo_Lloyd.RData')
 writeRaster(clustrastGeo, 'clusterGeo_Lloyd.tif')
 clustersGeo$centers
+
+#to raster PCA : rstoolbox (remote sensing toolbox) function is rasterPCA
