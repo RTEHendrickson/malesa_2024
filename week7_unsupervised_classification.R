@@ -77,7 +77,18 @@ clustrast=waterdyn[[1]]
 
 #We will use these coordinates to identify the cell number of analyzed pixels 
 #and then replace the value of those cells in original raster for the cluster number that was assigned to them in the k-mean analysis:
+xypoints=st_as_sf(coord, coords=c("x", "y"), crs=st_crs("EPSG:32618"))
+xypoints=vect(xypoints)
 
+cellval=cells(clustrast, xypoints)
+clustrast[cellval[,2]]=clusters$cluster
+plot(clustrast)
+zoom(clustrast, e=ext, maxcell=100000, layer=1, new=FALSE)
 
+#saving the cluster raster
+clustlist=list(clustrast, clusters)
+save(clustlist, file='cluster_Lloyd.RData')
+writeRaster(clustrast, 'cluster_Lloyd.tif')
 
-
+#interpreting cluster anaylsis
+clusters$centers
